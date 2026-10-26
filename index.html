@@ -219,8 +219,7 @@
     #feedback-overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(15, 23, 42, 0.7);
-      backdrop-filter: blur(4px);
+      background: rgba(15, 23, 42, 0.85); /* 移除了 iPad 容易造成卡頓的 backdrop-filter */
       display: none;
       flex-direction: column;
       justify-content: center;
@@ -574,7 +573,7 @@
       animationId = null;
     }
     animStartTime = null;
-    const duration = 1000; // 1秒過渡
+    const duration = 600; // 縮短動畫時間至 0.6 秒，極速流暢
 
     function renderLoop(timestamp) {
       if (!animStartTime) animStartTime = timestamp;
@@ -589,9 +588,15 @@
         animationId = requestAnimationFrame(renderLoop);
       } else {
         animationId = null;
+        drawScene(1); // 強制最後畫一次 100% 畫面
       }
     }
+
+    // iPad 雙保險機制：萬一 iOS 節能模式凍結 requestAnimationFrame，強行於 650ms 後補畫終點畫面
     animationId = requestAnimationFrame(renderLoop);
+    setTimeout(() => {
+      drawScene(1);
+    }, 650);
   }
 
   function volToY(vol, maxVol, cylY, cylH) {
