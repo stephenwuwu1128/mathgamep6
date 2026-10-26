@@ -15,6 +15,7 @@
     * {
       box-sizing: border-box;
       user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -31,20 +32,20 @@
     #game-card {
       background: white;
       width: 95%;
-      max-width: 900px;
+      max-width: 850px;
       border-radius: 20px;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      margin: 20px 0;
+      margin: 15px 0;
       position: relative;
     }
 
     header {
       background: #1E293B;
       color: white;
-      padding: 16px 24px;
+      padding: 14px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -60,26 +61,26 @@
 
     h1 {
       margin: 0;
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 700;
     }
 
     .stats {
       display: flex;
-      gap: 15px;
+      gap: 12px;
       font-size: 0.95rem;
       font-weight: 600;
     }
 
     .stat-item {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 6px 12px;
       border-radius: 8px;
     }
 
-    /* Mode Selection Screen */
+    /* Select Screen */
     #mode-select-screen {
-      padding: 40px 20px;
+      padding: 35px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -87,104 +88,105 @@
     }
 
     .mode-title {
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 800;
       color: #1E293B;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .mode-subtitle {
       color: #64748B;
-      font-size: 1.1rem;
-      margin-bottom: 35px;
+      font-size: 1rem;
+      margin-bottom: 30px;
     }
 
     .mode-btn-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 20px;
       width: 100%;
-      max-width: 650px;
+      max-width: 600px;
     }
 
     .mode-card {
       background: #F8FAFC;
       border: 3px solid #E2E8F0;
       border-radius: 16px;
-      padding: 24px;
+      padding: 20px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: transform 0.15s ease, border-color 0.15s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
+    .mode-card:active {
+      transform: scale(0.98);
+    }
+
     .mode-card:hover {
-      transform: translateY(-5px);
       border-color: var(--primary);
-      box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2);
+      box-shadow: 0 8px 15px -3px rgba(59, 130, 246, 0.15);
     }
 
     .mode-icon {
-      font-size: 3rem;
-      margin-bottom: 12px;
+      font-size: 2.8rem;
+      margin-bottom: 10px;
     }
 
     .mode-card h3 {
-      margin: 0 0 8px 0;
-      font-size: 1.4rem;
+      margin: 0 0 6px 0;
+      font-size: 1.3rem;
       color: #0F172A;
     }
 
     .mode-card p {
       margin: 0;
       color: #64748B;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       line-height: 1.4;
     }
 
-    /* Experiment Area */
+    /* Canvas Container */
     #experiment-area {
-      position: relative;
       width: 100%;
       background: #F1F5F9;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 10px;
+      padding: 15px 10px;
     }
 
     canvas {
-      background: #F8FAFC;
+      background: #FFFFFF;
       border-radius: 12px;
       box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
       max-width: 100%;
       height: auto;
     }
 
-    /* Question & Controls Area */
+    /* Question Box */
     #question-area {
-      padding: 20px 24px;
+      padding: 18px 20px;
       border-top: 1px solid #E2E8F0;
       background: #FFFFFF;
     }
 
     .question-text {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: #0F172A;
-      margin-bottom: 16px;
-      line-height: 1.5;
+      margin-bottom: 15px;
+      line-height: 1.4;
     }
 
     .options-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
-      margin-bottom: 12px;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 550px) {
       .options-grid {
         grid-template-columns: 1fr;
       }
@@ -194,72 +196,67 @@
       background: #F8FAFC;
       border: 2px solid #CBD5E1;
       border-radius: 12px;
-      padding: 16px;
-      font-size: 1.15rem;
+      padding: 14px;
+      font-size: 1.1rem;
       font-weight: 700;
       color: #1E293B;
       cursor: pointer;
-      transition: all 0.15s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .btn-opt:hover {
-      background: #EFF6FF;
-      border-color: var(--primary);
-      color: var(--primary-dark);
+      touch-action: manipulation;
     }
 
     .btn-opt:active {
-      transform: scale(0.98);
+      background: #EFF6FF;
+      border-color: var(--primary);
+      transform: scale(0.97);
     }
 
-    /* Feedback Overlay */
+    /* Feedback Modal */
     #feedback-overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(15, 23, 42, 0.85); /* 移除了 iPad 容易造成卡頓的 backdrop-filter */
+      background: rgba(15, 23, 42, 0.9);
       display: none;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 100;
-      border-radius: 20px;
+      padding: 20px;
     }
 
     .feedback-box {
       background: white;
-      padding: 30px;
-      border-radius: 20px;
+      padding: 25px;
+      border-radius: 16px;
       text-align: center;
-      max-width: 450px;
+      max-width: 420px;
       width: 90%;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
     }
 
     .feedback-msg {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 800;
       margin-bottom: 10px;
     }
 
     .feedback-detail {
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: #475569;
       line-height: 1.5;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
-    /* Result Screen */
+    /* End Screen */
     #result-screen {
-      padding: 30px;
+      padding: 30px 20px;
       display: none;
       text-align: center;
     }
 
     .result-score {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       font-weight: 900;
       color: var(--primary);
       margin-bottom: 10px;
@@ -270,27 +267,27 @@
       padding: 6px 16px;
       border-radius: 20px;
       font-weight: 700;
-      font-size: 1.1rem;
-      margin-bottom: 25px;
+      font-size: 1rem;
+      margin-bottom: 20px;
     }
 
-    .pass-tag { background: #D1FAE5; color: #065F46; }
-    .fail-tag { background: #FEE2E2; color: #991B1B; }
+    .pass-tag.pass { background: #D1FAE5; color: #065F46; }
+    .pass-tag.fail { background: #FEE2E2; color: #991B1B; }
 
     .review-list {
       text-align: left;
       background: #F8FAFC;
       border-radius: 12px;
-      padding: 16px;
-      max-height: 250px;
+      padding: 15px;
+      max-height: 220px;
       overflow-y: auto;
       margin-bottom: 20px;
     }
 
     .review-item {
-      padding: 10px 0;
+      padding: 8px 0;
       border-bottom: 1px solid #E2E8F0;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
     .review-item:last-child {
@@ -302,14 +299,13 @@
       color: white;
       border: none;
       border-radius: 12px;
-      padding: 14px 28px;
-      font-size: 1.1rem;
+      padding: 12px 24px;
+      font-size: 1.05rem;
       font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s;
     }
 
-    .btn-action:hover {
+    .btn-action:active {
       background: var(--primary-dark);
     }
   </style>
@@ -317,19 +313,19 @@
 <body>
 
 <div id="game-card">
-  <!-- 頁頂資訊欄 -->
+  <!-- 頁頂資訊 -->
   <header>
     <div class="title-group">
       <h1 id="mode-display">🧪 刻度大偵探：排水法挑戰</h1>
     </div>
     <div class="stats">
       <div class="stat-item" id="question-progress" style="display:none;">進度：1 / 5</div>
-      <div class="stat-item" id="timer-display" style="display:none;">⏳ 時間：25s</div>
+      <div class="stat-item" id="timer-display" style="display:none;">⏳ 25s</div>
       <div class="stat-item" id="score-display" style="display:none;">得分：0</div>
     </div>
   </header>
 
-  <!-- 難度選擇畫面 -->
+  <!-- 選單畫面 -->
   <div id="mode-select-screen">
     <div class="mode-title">🧪 刻度大偵探：排水法挑戰</div>
     <div class="mode-subtitle">請選擇難度級別開始挑戰：</div>
@@ -349,12 +345,12 @@
     </div>
   </div>
 
-  <!-- 實驗動畫繪製區域 -->
+  <!-- 實驗圖形區域 -->
   <div id="experiment-area" style="display:none;">
-    <canvas id="simCanvas" width="800" height="320"></canvas>
+    <canvas id="simCanvas" width="750" height="300"></canvas>
   </div>
 
-  <!-- 題目與選項區域 -->
+  <!-- 題目選項 -->
   <div id="question-area" style="display:none;">
     <div class="question-text" id="question-text">載入題目中...</div>
     <div class="options-grid" id="options-grid"></div>
@@ -364,14 +360,14 @@
   <div id="result-screen">
     <h2>🎉 挑戰完成！</h2>
     <div class="result-score" id="final-score">得分：0 / 5</div>
-    <div id="pass-status" class="pass-tag">合格！</div>
+    <div id="pass-status" class="pass-tag pass">合格！</div>
 
     <div class="review-list" id="review-list"></div>
 
     <button class="btn-action" onclick="showModeSelect()">回主選單再試一次</button>
   </div>
 
-  <!-- 反饋彈窗 -->
+  <!-- 回饋彈窗 -->
   <div id="feedback-overlay">
     <div class="feedback-box">
       <div class="feedback-msg" id="feedback-msg">答對了！</div>
@@ -381,43 +377,35 @@
 </div>
 
 <script>
-  // --- 狀態控制變數 ---
+  // --- 狀態變數 ---
   let currentMode = 'easy';
   let currentQuestion = 0;
   const totalQuestions = 5;
   let score = 0;
-  let timerInterval = null;
-  let feedbackTimeout = null;
+  let timerId = null;
+  let feedbackTimer = null;
   let timeLeft = 0;
   let canAnswer = false;
   let wrongRecords = [];
 
-  // Canvas 動畫控制
   const canvas = document.getElementById('simCanvas');
   const ctx = canvas.getContext('2d');
-  let animationId = null;
-  let animStartTime = null;
 
-  // 當前題目數據
   let currentData = null;
 
-  function clearAllTimers() {
-    if (timerInterval) {
-      clearInterval(timerInterval);
-      timerInterval = null;
+  function stopAllTimers() {
+    if (timerId) {
+      clearTimeout(timerId);
+      timerId = null;
     }
-    if (feedbackTimeout) {
-      clearTimeout(feedbackTimeout);
-      feedbackTimeout = null;
-    }
-    if (animationId) {
-      cancelAnimationFrame(animationId);
-      animationId = null;
+    if (feedbackTimer) {
+      clearTimeout(feedbackTimer);
+      feedbackTimer = null;
     }
   }
 
   function showModeSelect() {
-    clearAllTimers();
+    stopAllTimers();
 
     document.getElementById('mode-select-screen').style.display = 'flex';
     document.getElementById('experiment-area').style.display = 'none';
@@ -432,7 +420,7 @@
   }
 
   function startGame(mode) {
-    clearAllTimers();
+    stopAllTimers();
     currentMode = mode;
     currentQuestion = 0;
     score = 0;
@@ -441,7 +429,6 @@
     document.getElementById('mode-select-screen').style.display = 'none';
     document.getElementById('experiment-area').style.display = 'flex';
     document.getElementById('question-area').style.display = 'block';
-    document.getElementById('options-grid').style.display = 'grid';
 
     document.getElementById('question-progress').style.display = 'block';
     document.getElementById('timer-display').style.display = 'block';
@@ -455,7 +442,7 @@
   }
 
   function nextQuestion() {
-    clearAllTimers();
+    stopAllTimers();
 
     if (currentQuestion >= totalQuestions) {
       showResult();
@@ -467,8 +454,8 @@
 
     generateQuestionData();
     renderQuestionUI();
+    drawStaticScene();
     startTimer();
-    triggerAnimation();
   }
 
   function generateQuestionData() {
@@ -477,7 +464,7 @@
     if (currentMode === 'easy') {
       maxVol = 50;
       majorStep = 10;
-      step = 2; // 每刻度 2 cm³
+      step = 2; 
     } else {
       const hardConfigs = [
         { maxVol: 100, majorStep: 20, step: 5 },
@@ -491,9 +478,9 @@
     }
 
     const totalTicks = maxVol / step;
-    const count = Math.floor(Math.random() * 3) + 2; // 2 ~ 4 個物件
+    const count = Math.floor(Math.random() * 3) + 2; 
 
-    const unitVolTicks = Math.floor(Math.random() * 3) + 1; // 1 ~ 3 個小格
+    const unitVolTicks = Math.floor(Math.random() * 3) + 1; 
     const unitVol = unitVolTicks * step;
     const totalVol = unitVol * count;
 
@@ -553,68 +540,39 @@
 
   function startTimer() {
     timeLeft = (currentMode === 'easy') ? 25 : 15;
-    document.getElementById('timer-display').innerText = `⏳ 時間：${timeLeft}s`;
+    document.getElementById('timer-display').innerText = `⏳ ${timeLeft}s`;
 
-    timerInterval = setInterval(() => {
+    function tick() {
       timeLeft--;
-      document.getElementById('timer-display').innerText = `⏳ 時間：${timeLeft}s`;
+      document.getElementById('timer-display').innerText = `⏳ ${timeLeft}s`;
+
       if (timeLeft <= 0) {
-        clearInterval(timerInterval);
-        timerInterval = null;
         handleTimeout();
-      }
-    }, 1000);
-  }
-
-  // --- 穩定畫圖與動畫引擎 ---
-  function triggerAnimation() {
-    if (animationId) {
-      cancelAnimationFrame(animationId);
-      animationId = null;
-    }
-    animStartTime = null;
-    const duration = 600; // 縮短動畫時間至 0.6 秒，極速流暢
-
-    function renderLoop(timestamp) {
-      if (!animStartTime) animStartTime = timestamp;
-      let elapsed = timestamp - animStartTime;
-      let progress = Math.min(elapsed / duration, 1);
-
-      // Ease out cubic
-      let easeProgress = 1 - Math.pow(1 - progress, 3);
-      drawScene(easeProgress);
-
-      if (progress < 1) {
-        animationId = requestAnimationFrame(renderLoop);
       } else {
-        animationId = null;
-        drawScene(1); // 強制最後畫一次 100% 畫面
+        timerId = setTimeout(tick, 1000);
       }
     }
 
-    // iPad 雙保險機制：萬一 iOS 節能模式凍結 requestAnimationFrame，強行於 650ms 後補畫終點畫面
-    animationId = requestAnimationFrame(renderLoop);
-    setTimeout(() => {
-      drawScene(1);
-    }, 650);
+    timerId = setTimeout(tick, 1000);
   }
 
+  // --- 絕對精準純單次繪圖（避免 iPad 切換凍結）---
   function volToY(vol, maxVol, cylY, cylH) {
     const margin = 20;
     const usableH = cylH - margin * 2;
     return Math.round(cylY + cylH - margin - (vol / maxVol) * usableH);
   }
 
-  function drawSingleCylinder(x, y, w, h, waterVol, config, title, isRightCylinder, animProgress) {
+  function drawCylinder(x, y, w, h, waterVol, config, title, hasObjects) {
     const baseMargin = 20;
     const bottomY = y + h - baseMargin;
     const waterTopY = volToY(waterVol, config.maxVol, y, h);
 
-    // 1. 水體
+    // 1. 水體填滿
     ctx.fillStyle = "rgba(56, 189, 248, 0.55)";
     ctx.fillRect(x + 5, waterTopY, w - 10, bottomY - waterTopY);
 
-    // 2. 水面頂邊線
+    // 2. 水面頂線
     ctx.strokeStyle = "#0284C7";
     ctx.lineWidth = 2.5;
     ctx.beginPath();
@@ -622,13 +580,9 @@
     ctx.lineTo(x + w - 5, waterTopY);
     ctx.stroke();
 
-    // 3. 物件掉落動畫
-    if (isRightCylinder && animProgress > 0) {
-      const dropDistance = 80;
-      const initialY = y - dropDistance;
-      const targetY = bottomY - 25;
-      const currentObjectY = initialY + (targetY - initialY) * animProgress;
-
+    // 3. 物件
+    if (hasObjects) {
+      const targetY = bottomY - 18;
       ctx.fillStyle = "#F59E0B";
       ctx.strokeStyle = "#B45309";
       ctx.lineWidth = 2;
@@ -636,13 +590,13 @@
       for (let i = 0; i < currentData.count; i++) {
         const objX = x + (w / (currentData.count + 1)) * (i + 1);
         ctx.beginPath();
-        ctx.arc(objX, currentObjectY, 12, 0, Math.PI * 2);
+        ctx.arc(objX, targetY, 11, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
       }
     }
 
-    // 4. 量杯外框 (封閉底部)
+    // 4. 外框
     ctx.strokeStyle = "#334155";
     ctx.lineWidth = 3;
     ctx.beginPath();
@@ -652,14 +606,14 @@
     ctx.lineTo(x + w, y);
     ctx.stroke();
 
-    // 5. 刻度線
+    // 5. 刻度
     const totalTicks = config.maxVol / config.step;
     for (let i = 0; i <= totalTicks; i++) {
       const val = i * config.step;
       const markY = volToY(val, config.maxVol, y, h);
 
       const isMajor = (val % config.majorStep === 0);
-      const lineLen = isMajor ? 18 : 10;
+      const lineLen = isMajor ? 16 : 9;
 
       ctx.strokeStyle = isMajor ? "#0F172A" : "#64748B";
       ctx.lineWidth = isMajor ? 1.8 : 1.0;
@@ -686,35 +640,34 @@
 
     // 6. 標題
     ctx.fillStyle = "#1E293B";
-    ctx.font = "bold 15px sans-serif";
+    ctx.font = "bold 14px sans-serif";
     ctx.textAlign = "center";
     ctx.fillText(title, x + w / 2, y + h + 22);
   }
 
-  function drawScene(progress) {
+  function drawStaticScene() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const cfg = currentData.cylinderConfig;
-    const cylW = 140, cylH = 240, cylY = 45;
+    const cylW = 130, cylH = 220, cylY = 35;
 
-    // 左邊量杯（未放入）
-    drawSingleCylinder(160, cylY, cylW, cylH, currentData.startVol, cfg, "【實驗前】未放入物件", false, 0);
+    // 左量杯
+    drawCylinder(140, cylY, cylW, cylH, currentData.startVol, cfg, "【實驗前】未放入物件", false);
 
     // 中間箭頭
     ctx.fillStyle = "#3B82F6";
-    ctx.font = "bold 28px sans-serif";
+    ctx.font = "bold 26px sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("➔", 400, cylY + cylH / 2);
+    ctx.fillText("➔", 375, cylY + cylH / 2);
 
-    // 右邊量杯（放入後）
-    const currentRightWater = currentData.startVol + (currentData.totalVol * progress);
-    drawSingleCylinder(500, cylY, cylW, cylH, currentRightWater, cfg, `【實驗後】放入 ${currentData.count} 個 立體`, true, progress);
+    // 右量杯
+    drawCylinder(480, cylY, cylW, cylH, currentData.endVol, cfg, `【實驗後】放入 ${currentData.count} 個 立體`, true);
   }
 
   function checkAnswer(selectedVal) {
     if (!canAnswer) return;
     canAnswer = false;
-    clearAllTimers();
+    stopAllTimers();
 
     const isCorrect = (selectedVal === currentData.correctAnswer);
     if (isCorrect) {
@@ -728,8 +681,9 @@
   }
 
   function handleTimeout() {
+    if (!canAnswer) return;
     canAnswer = false;
-    clearAllTimers();
+    stopAllTimers();
     recordWrong("超時未答");
     showFeedback(false, `⏰ 時間到！正確答案是 ${currentData.correctAnswer} cm³`);
   }
@@ -767,17 +721,16 @@
 
     overlay.style.display = 'flex';
 
-    feedbackTimeout = setTimeout(() => {
+    feedbackTimer = setTimeout(() => {
       overlay.style.display = 'none';
       nextQuestion();
-    }, 2000);
+    }, 1800);
   }
 
   function showResult() {
-    clearAllTimers();
+    stopAllTimers();
 
     document.getElementById('question-area').style.display = 'none';
-    document.getElementById('options-grid').style.display = 'none';
     document.getElementById('experiment-area').style.display = 'none';
     document.getElementById('result-screen').style.display = 'block';
 
@@ -785,16 +738,16 @@
 
     const passStatus = document.getElementById('pass-status');
     if (score >= 3) {
-      passStatus.className = 'pass-tag';
+      passStatus.className = 'pass-tag pass';
       passStatus.innerHTML = '🌟 合格！請向老師出示，並獲取貼紙一個 🎁';
     } else {
-      passStatus.className = 'fail-tag';
+      passStatus.className = 'pass-tag fail';
       passStatus.innerHTML = '💪 再接再厲！請重新挑戰！';
     }
 
     const reviewList = document.getElementById('review-list');
     if (wrongRecords.length === 0) {
-      reviewList.innerHTML = '<p style="color:#10B981; font-weight:bold;">太厲害了！全部題目答對！🎉</p>';
+      reviewList.innerHTML = '<p style="color:#10B981; font-weight:bold; text-align:center;">太厲害了！全部題目答對！🎉</p>';
     } else {
       reviewList.innerHTML = wrongRecords.map(item => `
         <div class="review-item">
