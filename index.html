@@ -3,758 +3,668 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>排水法數學大冒險 🧪</title>
+  <title>刻度大偵探：排水法數學挑戰 🧪</title>
   <style>
     :root {
-      --primary-color: #3A7BD5;
-      --secondary-color: #00D2FF;
-      --accent-color: #FF6B6B;
-      --bg-color: #E2E9F0;
+      --primary: #3B82F6;
+      --primary-dark: #1D4ED8;
+      --accent: #F59E0B;
+      --bg-gradient: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
     }
 
     * {
       box-sizing: border-box;
-      font-family: "Chalkboard SE", "Comic Sans MS", "Microsoft JhengHei", sans-serif;
       user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
       margin: 0;
-      padding: 10px;
-      background-color: var(--bg-color);
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-gradient);
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
     }
 
-    #game-container {
-      width: 100%;
-      max-width: 900px;
+    #game-card {
       background: white;
+      width: 95%;
+      max-width: 850px;
       border-radius: 20px;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      margin: 15px 0;
       position: relative;
     }
 
     header {
-      background: linear-gradient(135deg, #3A7BD5, #00D2FF);
+      background: #1E293B;
       color: white;
-      padding: 14px 24px;
+      padding: 14px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 1.1rem;
-      font-weight: bold;
       flex-wrap: wrap;
       gap: 10px;
     }
 
-    .badge {
-      background: rgba(255, 255, 255, 0.22);
-      padding: 6px 14px;
-      border-radius: 20px;
-      backdrop-filter: blur(4px);
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .timer-warning {
-      color: #FFD166;
-      animation: pulse 0.5s infinite alternate;
+    h1 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
     }
 
-    @keyframes pulse {
-      from { transform: scale(1); }
-      to { transform: scale(1.08); }
+    .stats {
+      display: flex;
+      gap: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
     }
 
+    .stat-item {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    /* Select Screen */
     #mode-select-screen {
+      padding: 35px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 40px 20px;
       text-align: center;
-      min-height: 480px;
-      background: linear-gradient(180deg, #FFFFFF 0%, #F0F6FF 100%);
     }
 
     .mode-title {
-      font-size: 2.2rem;
+      font-size: 1.8rem;
+      font-weight: 800;
       color: #1E293B;
       margin-bottom: 8px;
     }
 
     .mode-subtitle {
-      font-size: 1.15rem;
       color: #64748B;
+      font-size: 1rem;
       margin-bottom: 30px;
     }
 
     .mode-btn-container {
-      display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
       width: 100%;
       max-width: 600px;
     }
 
     .mode-card {
-      flex: 1;
-      min-width: 240px;
-      background: white;
-      border: 3px solid #CBD5E1;
-      border-radius: 18px;
-      padding: 24px 20px;
+      background: #F8FAFC;
+      border: 3px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 20px;
       cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+      transition: transform 0.15s ease, border-color 0.15s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
+
+    .mode-card:active {
+      transform: scale(0.98);
     }
 
     .mode-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+      border-color: var(--primary);
+      box-shadow: 0 8px 15px -3px rgba(59, 130, 246, 0.15);
     }
 
-    .mode-card.easy-card { border-color: #10B981; }
-    .mode-card.easy-card:hover { background: #ECFDF5; }
+    .mode-icon {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+    }
 
-    .mode-card.hard-card { border-color: #EF4444; }
-    .mode-card.hard-card:hover { background: #FEF2F2; }
+    .mode-card h3 {
+      margin: 0 0 6px 0;
+      font-size: 1.3rem;
+      color: #0F172A;
+    }
 
-    .mode-icon { font-size: 3rem; margin-bottom: 12px; }
-    .mode-name { font-size: 1.5rem; font-weight: bold; color: #0F172A; margin-bottom: 8px; }
-    .mode-desc { font-size: 0.95rem; color: #475569; line-height: 1.4; text-align: left; }
+    .mode-card p {
+      margin: 0;
+      color: #64748B;
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
 
+    /* Canvas Container */
     #experiment-area {
-      position: relative;
-      background: #F0F6FF;
+      width: 100%;
+      background: #F1F5F9;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      padding: 15px 10px 10px;
-      border-bottom: 3px solid #D0E1F9;
+      padding: 15px 10px;
     }
 
     canvas {
-      background: transparent;
+      background: #FFFFFF;
+      border-radius: 12px;
+      box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
       max-width: 100%;
       height: auto;
     }
 
-    .action-btn {
-      margin-top: 10px;
-      padding: 10px 32px;
-      font-size: 1.25rem;
-      font-weight: bold;
-      color: white;
-      background: linear-gradient(180deg, #FF9F43 0%, #EE5A24 100%);
-      border: none;
-      border-radius: 30px;
-      box-shadow: 0 4px 0 #B33923;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .action-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 0 #B33923;
-    }
-
-    .action-btn:active {
-      transform: translateY(2px);
-      box-shadow: 0 2px 0 #B33923;
-    }
-
-    .action-btn:disabled {
-      background: #BDC3C7;
-      box-shadow: 0 4px 0 #7F8C8D;
-      cursor: not-allowed;
-      transform: none;
-    }
-
+    /* Question Box */
     #question-area {
-      padding: 12px 20px 6px;
-      text-align: center;
+      padding: 18px 20px;
+      border-top: 1px solid #E2E8F0;
+      background: #FFFFFF;
     }
 
     .question-text {
-      font-size: 1.25rem;
-      color: #1E293B;
-      font-weight: bold;
-      min-height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0F172A;
+      margin-bottom: 15px;
+      line-height: 1.4;
     }
 
-    #options-grid {
+    .options-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
-      padding: 10px 20px 20px;
     }
 
-    .mole-btn {
-      position: relative;
-      background: linear-gradient(180deg, #8D5B4C 0%, #5A382E 100%);
-      height: 72px;
+    @media (max-width: 550px) {
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .btn-opt {
+      background: #F8FAFC;
+      border: 2px solid #CBD5E1;
       border-radius: 12px;
-      border: 2px solid #3E241C;
+      padding: 14px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1E293B;
       cursor: pointer;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
       align-items: center;
-      overflow: hidden;
-      transition: transform 0.12s ease, background 0.12s;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    }
-
-    .mole-btn:hover { background: linear-gradient(180deg, #A06656 0%, #684135 100%); }
-    .mole-btn:active { transform: scale(0.95); }
-
-    .mole-head {
-      width: 58px;
-      height: 48px;
-      background: #D2B48C;
-      border-radius: 30px 30px 0 0;
-      position: relative;
-      display: flex;
       justify-content: center;
-      align-items: center;
-      box-shadow: inset 0 -4px 0 rgba(0,0,0,0.15);
+      touch-action: manipulation;
     }
 
-    .mole-eyes {
-      position: absolute;
-      top: 12px;
-      width: 32px;
-      display: flex;
-      justify-content: space-between;
+    .btn-opt:active {
+      background: #EFF6FF;
+      border-color: var(--primary);
+      transform: scale(0.97);
     }
 
-    .mole-eye { width: 6px; height: 6px; background: #111; border-radius: 50%; }
-    .mole-nose { position: absolute; top: 20px; width: 10px; height: 7px; background: #FF6B6B; border-radius: 50%; }
-
-    .mole-value {
-      position: absolute;
-      bottom: 4px;
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: #0F172A;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 2px 8px;
-      border-radius: 8px;
-      border: 1px solid #94A3B8;
-      white-space: nowrap;
-    }
-
+    /* Feedback Modal */
     #feedback-overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(15, 23, 42, 0.82);
+      background: rgba(15, 23, 42, 0.9);
       display: none;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      color: white;
-      font-size: 1.4rem;
-      text-align: center;
-      padding: 24px;
-      z-index: 20;
-      backdrop-filter: blur(3px);
+      z-index: 100;
+      padding: 20px;
     }
 
-    #result-screen {
-      display: none;
+    .feedback-box {
+      background: white;
       padding: 25px;
+      border-radius: 16px;
       text-align: center;
-      max-height: 85vh;
-      overflow-y: auto;
+      max-width: 420px;
+      width: 90%;
     }
 
-    .result-title { font-size: 2.1rem; margin-bottom: 10px; color: #1E293B; }
-    .pass-tag { color: #10B981; font-size: 1.4rem; font-weight: bold; margin: 15px 0; }
-    .fail-tag { color: #EF4444; font-size: 1.4rem; font-weight: bold; margin: 15px 0; }
+    .feedback-msg {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
 
-    .review-box {
+    .feedback-detail {
+      font-size: 1rem;
+      color: #475569;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    /* End Screen */
+    #result-screen {
+      padding: 30px 20px;
+      display: none;
+      text-align: center;
+    }
+
+    .result-score {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .pass-tag {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    .pass-tag.pass { background: #D1FAE5; color: #065F46; }
+    .pass-tag.fail { background: #FEE2E2; color: #991B1B; }
+
+    .review-list {
       text-align: left;
       background: #F8FAFC;
-      border: 2px solid #E2E8F0;
-      border-radius: 14px;
-      padding: 16px;
-      margin-top: 20px;
+      border-radius: 12px;
+      padding: 15px;
+      max-height: 220px;
+      overflow-y: auto;
+      margin-bottom: 20px;
     }
 
-    .review-item { border-bottom: 1px solid #CBD5E1; padding: 12px 0; }
-    .review-item:last-child { border-bottom: none; }
-
-    .btn-group {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin-top: 20px;
+    .review-item {
+      padding: 8px 0;
+      border-bottom: 1px solid #E2E8F0;
+      font-size: 0.9rem;
     }
 
-    .restart-btn {
-      background: linear-gradient(135deg, #3A7BD5, #00D2FF);
+    .review-item:last-child {
+      border-bottom: none;
+    }
+
+    .btn-action {
+      background: var(--primary);
       color: white;
       border: none;
-      padding: 12px 28px;
-      font-size: 1.15rem;
-      font-weight: bold;
-      border-radius: 30px;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3);
-    }
-
-    .home-btn {
-      background: #64748B;
-      color: white;
-      border: none;
+      border-radius: 12px;
       padding: 12px 24px;
-      font-size: 1.15rem;
-      font-weight: bold;
-      border-radius: 30px;
+      font-size: 1.05rem;
+      font-weight: 700;
       cursor: pointer;
     }
 
-    @media (max-width: 680px) {
-      #options-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      .question-text { font-size: 1.05rem; }
-      .mole-btn { height: 68px; }
-      .mole-head { width: 50px; height: 42px; }
-      .mole-value { font-size: 0.95rem; }
+    .btn-action:active {
+      background: var(--primary-dark);
     }
   </style>
 </head>
 <body>
 
-<div id="game-container">
+<div id="game-card">
+  <!-- 頁頂資訊 -->
   <header>
-    <div class="badge" id="mode-display">🎮 排水法問答大冒險</div>
-    <div class="badge" id="question-progress" style="display:none;">題目：1 / 5</div>
-    <div class="badge" id="timer-display" style="display:none;">⏱️ 時間：25s</div>
-    <div class="badge" id="score-display" style="display:none;">得分：0</div>
+    <div class="title-group">
+      <h1 id="mode-display">🧪 刻度大偵探：排水法挑戰</h1>
+    </div>
+    <div class="stats">
+      <div class="stat-item" id="question-progress" style="display:none;">進度：1 / 5</div>
+      <div class="stat-item" id="timer-display" style="display:none;">⏳ 25s</div>
+      <div class="stat-item" id="score-display" style="display:none;">得分：0</div>
+    </div>
   </header>
 
-  <!-- 難度選擇畫面 -->
+  <!-- 選單畫面 -->
   <div id="mode-select-screen">
-    <div class="mode-title">🧪 排水法數學大冒險</div>
+    <div class="mode-title">🧪 刻度大偵探：排水法挑戰</div>
     <div class="mode-subtitle">請選擇難度級別開始挑戰：</div>
     
     <div class="mode-btn-container">
-      <div class="mode-card easy-card" onclick="startGame('easy')">
-        <div class="mode-icon">🌱</div>
-        <div class="mode-name">初級模式</div>
-        <div class="mode-desc">
-          • 100 cm³ 容量量杯<br/>
-          • 所有大刻度均標有數字<br/>
-          • 每題 25 秒充裕時間<br/>
-          • 適合初學者學習排水法
-        </div>
+      <div class="mode-card" onclick="startGame('easy')">
+        <div class="mode-icon">🟢</div>
+        <h3>初級模式</h3>
+        <p>• 固定容量量杯 (50 cm³)<br/>• 顯示所有主要刻度數字<br/>• 時間充裕 (25 秒/題)</p>
       </div>
 
-      <div class="mode-card hard-card" onclick="startGame('hard')">
+      <div class="mode-card" onclick="startGame('hard')">
         <div class="mode-icon">🔥</div>
-        <div class="mode-name">高級模式</div>
-        <div class="mode-desc">
-          • 隨機容量 (100 / 150 / 200 cm³)<br/>
-          • 僅顯示最高容量數字<br/>
-          • 自主推算與計數刻度<br/>
-          • 每題 15 秒挑戰時間
-        </div>
+        <h3>高級模式</h3>
+        <p>• 變幻容量量杯 (100-200 cm³)<br/>• 僅顯示最高容量數字，考驗逆推能力<br/>• 限時挑戰 (15 秒/題)</p>
       </div>
     </div>
   </div>
 
+  <!-- 實驗圖形區域 -->
   <div id="experiment-area" style="display:none;">
-    <canvas id="expCanvas" width="800" height="320"></canvas>
-    <button class="action-btn" id="drop-btn" onclick="triggerExperiment()">🪨 投入物件</button>
+    <canvas id="simCanvas" width="750" height="300"></canvas>
   </div>
 
+  <!-- 題目選項 -->
   <div id="question-area" style="display:none;">
-    <div class="question-text" id="question-text">請按「投入物件」按鈕進行排水實驗！</div>
+    <div class="question-text" id="question-text">載入題目中...</div>
+    <div class="options-grid" id="options-grid"></div>
   </div>
 
-  <div id="options-grid" style="display:none;"></div>
-
-  <div id="feedback-overlay">
-    <div id="feedback-msg"></div>
-    <div id="feedback-detail" style="font-size: 1.1rem; margin-top: 14px; color: #FFD166;"></div>
-  </div>
-
+  <!-- 結算畫面 -->
   <div id="result-screen">
-    <div class="result-title">🎯 挑戰完成！</div>
-    <div id="final-score" style="font-size: 1.3rem; font-weight: bold;"></div>
-    <div id="pass-status"></div>
-    
-    <div class="review-box" id="review-container">
-      <h3 style="margin-top: 0;">📝 錯題檢討記錄：</h3>
-      <div id="review-list">無錯題，你太棒了！🎉</div>
-    </div>
+    <h2>🎉 挑戰完成！</h2>
+    <div class="result-score" id="final-score">得分：0 / 5</div>
+    <div id="pass-status" class="pass-tag pass">合格！</div>
 
-    <div class="btn-group">
-      <button class="restart-btn" onclick="startGame(gameMode)">🔄 重新挑戰本級別</button>
-      <button class="home-btn" onclick="showModeSelect()">🏠 選取難度</button>
+    <div class="review-list" id="review-list"></div>
+
+    <button class="btn-action" onclick="showModeSelect()">回主選單再試一次</button>
+  </div>
+
+  <!-- 回饋彈窗 -->
+  <div id="feedback-overlay">
+    <div class="feedback-box">
+      <div class="feedback-msg" id="feedback-msg">答對了！</div>
+      <div class="feedback-detail" id="feedback-detail"></div>
+      <button class="btn-action" id="btn-next-question" onclick="closeFeedbackAndNext()" style="margin-top: 15px; width: 100%;">下一題 ➔</button>
     </div>
   </div>
 </div>
 
 <script>
-  let gameMode = 'easy';
+  // --- 狀態變數 ---
+  let currentMode = 'easy';
   let currentQuestion = 0;
   const totalQuestions = 5;
   let score = 0;
-  let timeLeft = 25;
-  let timerInterval = null;
-  let hasDropped = false;
+  let timerId = null;
+  let timeLeft = 0;
   let canAnswer = false;
-
-  const easyCylinderConfig = { maxVol: 100, step: 5, majorStep: 20, showLabels: 'all' };
-  
-  const hardCylinderConfigs = [
-    { maxVol: 100, step: 5, majorStep: 20, showLabels: 'top_only' },
-    { maxVol: 150, step: 5, majorStep: 25, showLabels: 'top_only' },
-    { maxVol: 200, step: 10, majorStep: 50, showLabels: 'top_only' },
-    { maxVol: 100, step: 5, majorStep: 25, showLabels: 'top_only' }
-  ];
-
-  let currentData = {
-    shape: '正方體',
-    count: 1,
-    unitVol: 5,
-    totalVol: 5,
-    cylinderConfig: easyCylinderConfig,
-    type: 'A',
-    options: [],
-    correctAnswer: 0
-  };
-
   let wrongRecords = [];
 
-  const canvas = document.getElementById('expCanvas');
+  const canvas = document.getElementById('simCanvas');
   const ctx = canvas.getContext('2d');
 
-  let animFrame = null;
-  let animProgress = 0;
-  let isAnimating = false;
+  let currentData = null;
 
-  const shapesList = ['正方體', '球體', '圓錐體', '圓柱體'];
+  function stopAllTimers() {
+    if (timerId) {
+      clearTimeout(timerId);
+      timerId = null;
+    }
+  }
 
   function showModeSelect() {
-    clearInterval(timerInterval);
+    stopAllTimers();
+
     document.getElementById('mode-select-screen').style.display = 'flex';
     document.getElementById('experiment-area').style.display = 'none';
     document.getElementById('question-area').style.display = 'none';
-    document.getElementById('options-grid').style.display = 'none';
     document.getElementById('result-screen').style.display = 'none';
+    document.getElementById('feedback-overlay').style.display = 'none';
     
     document.getElementById('question-progress').style.display = 'none';
     document.getElementById('timer-display').style.display = 'none';
     document.getElementById('score-display').style.display = 'none';
-    document.getElementById('mode-display').innerText = '🎮 排水法問答大冒險';
+    document.getElementById('mode-display').innerText = '🧪 刻度大偵探：排水法挑戰';
   }
 
   function startGame(mode) {
-    gameMode = mode;
+    stopAllTimers();
+    currentMode = mode;
     currentQuestion = 0;
     score = 0;
     wrongRecords = [];
 
     document.getElementById('mode-select-screen').style.display = 'none';
-    document.getElementById('result-screen').style.display = 'none';
-    document.getElementById('question-area').style.display = 'block';
-    document.getElementById('options-grid').style.display = 'grid';
     document.getElementById('experiment-area').style.display = 'flex';
+    document.getElementById('question-area').style.display = 'block';
 
-    document.getElementById('question-progress').style.display = 'inline-block';
-    document.getElementById('timer-display').style.display = 'inline-block';
-    document.getElementById('score-display').style.display = 'inline-block';
-    
-    document.getElementById('mode-display').innerText = (gameMode === 'easy') ? '🌱 【初級模式】' : '🔥 【高級模式】';
-    document.getElementById('score-display').innerText = `得分：${score}`;
+    document.getElementById('question-progress').style.display = 'block';
+    document.getElementById('timer-display').style.display = 'block';
+    document.getElementById('score-display').style.display = 'block';
+
+    const modeText = (mode === 'easy') ? '【初級模式】' : '【高級模式】';
+    document.getElementById('mode-display').innerText = `🧪 刻度大偵探 ${modeText}`;
+    document.getElementById('score-display').innerText = `得分：0`;
 
     nextQuestion();
   }
 
-  function generateQuestionData() {
-    const shape = shapesList[Math.floor(Math.random() * shapesList.length)];
-    let cylConfig = (gameMode === 'easy') ? easyCylinderConfig : hardCylinderConfigs[Math.floor(Math.random() * hardCylinderConfigs.length)];
-    let count = (gameMode === 'easy') ? Math.floor(Math.random() * 3) + 1 : Math.floor(Math.random() * 4) + 1;
-
-    // 嚴格保證體積一定是該量杯刻度 step 的整數倍
-    const step = cylConfig.step;
-    const maxUnits = Math.floor((cylConfig.maxVol * 0.85) / (count * step));
-    const minUnits = Math.max(1, Math.floor(2 / step));
-    
-    const unitSteps = Math.floor(Math.random() * (maxUnits - minUnits + 1)) + minUnits;
-    const unitVol = unitSteps * step;
-    const totalVol = unitVol * count;
-
-    const type = (currentQuestion % 2 === 0) ? 'A' : 'B';
-    let correctAnswer = (type === 'A') ? totalVol : unitVol;
-    
-    // 生成選項，同樣嚴格按照 step 倍數跳躍，確保干擾項也在刻度線上
-    let optionsSet = new Set([correctAnswer]);
-    while(optionsSet.size < 4) {
-      let offset = (Math.floor(Math.random() * 4) + 1) * step * (Math.random() < 0.5 ? 1 : -1);
-      let fakeVal = correctAnswer + offset;
-      if (fakeVal > 0 && fakeVal <= cylConfig.maxVol) {
-        optionsSet.add(fakeVal);
-      }
-    }
-
-    let options = Array.from(optionsSet).sort((a, b) => a - b);
-    currentData = { shape, count, unitVol, totalVol, cylinderConfig: cylConfig, type, options, correctAnswer };
-  }
-
   function nextQuestion() {
+    stopAllTimers();
+
     if (currentQuestion >= totalQuestions) {
       showResult();
       return;
     }
 
     currentQuestion++;
-    hasDropped = false;
-    canAnswer = false;
-    animProgress = 0;
-    
-    document.getElementById('question-progress').innerText = `題目：${currentQuestion} / ${totalQuestions}`;
-    document.getElementById('drop-btn').disabled = false;
-    
+    document.getElementById('question-progress').innerText = `進度：${currentQuestion} / ${totalQuestions}`;
+
     generateQuestionData();
-    drawScene(0);
-
-    if (currentData.type === 'A') {
-      document.getElementById('question-text').innerText = `請按「投入物件」按鈕，觀察量杯刻度，計算 ${currentData.count} 個【立體】總體積是多少 cm³？`;
-    } else {
-      document.getElementById('question-text').innerText = `請按「投入物件」按鈕，觀察量杯刻度，計算【每個】立體的體積是多少 cm³？`;
-    }
-
-    renderMoleOptions();
-    resetTimer();
+    renderQuestionUI();
+    drawStaticScene();
+    startTimer();
   }
 
-  function renderMoleOptions() {
+  function generateQuestionData() {
+    let maxVol, majorStep, step;
+    
+    if (currentMode === 'easy') {
+      maxVol = 50;
+      majorStep = 10;
+      step = 2; 
+    } else {
+      const hardConfigs = [
+        { maxVol: 100, majorStep: 20, step: 5 },
+        { maxVol: 150, majorStep: 25, step: 5 },
+        { maxVol: 200, majorStep: 50, step: 10 }
+      ];
+      const selected = hardConfigs[Math.floor(Math.random() * hardConfigs.length)];
+      maxVol = selected.maxVol;
+      majorStep = selected.majorStep;
+      step = selected.step;
+    }
+
+    const totalTicks = maxVol / step;
+    const count = Math.floor(Math.random() * 3) + 2; 
+
+    const unitVolTicks = Math.floor(Math.random() * 3) + 1; 
+    const unitVol = unitVolTicks * step;
+    const totalVol = unitVol * count;
+
+    const maxStartTicks = totalTicks - (unitVolTicks * count) - 1;
+    const startVolTicks = Math.floor(Math.random() * (maxStartTicks - 2 + 1)) + 2;
+    const startVol = startVolTicks * step;
+    const endVol = startVol + totalVol;
+
+    const type = (Math.random() > 0.5) ? 'A' : 'B';
+    const correctAnswer = (type === 'A') ? totalVol : unitVol;
+
+    currentData = {
+      type: type,
+      cylinderConfig: { maxVol, majorStep, step },
+      startVol: startVol,
+      endVol: endVol,
+      totalVol: totalVol,
+      unitVol: unitVol,
+      count: count,
+      correctAnswer: correctAnswer
+    };
+  }
+
+  function renderQuestionUI() {
+    const qText = document.getElementById('question-text');
+    if (currentData.type === 'A') {
+      qText.innerText = `請觀察量杯，計算放入的 ${currentData.count} 個【立體】總體積是多少 cm³？`;
+    } else {
+      qText.innerText = `請觀察量杯，計算【每個】立體的體積是多少 cm³？`;
+    }
+
+    const options = new Set();
+    options.add(currentData.correctAnswer);
+
+    const step = currentData.cylinderConfig.step;
+    while (options.size < 4) {
+      let offset = (Math.floor(Math.random() * 5) - 2) * step;
+      let wrongAns = currentData.correctAnswer + offset;
+      if (wrongAns > 0 && wrongAns !== currentData.correctAnswer) {
+        options.add(wrongAns);
+      }
+    }
+
+    const shuffled = Array.from(options).sort(() => Math.random() - 0.5);
     const grid = document.getElementById('options-grid');
     grid.innerHTML = '';
-    
-    currentData.options.forEach(val => {
-      const btn = document.createElement('div');
-      btn.className = 'mole-btn';
-      btn.onclick = () => checkAnswer(val);
-      btn.innerHTML = `
-        <div class="mole-head">
-          <div class="mole-eyes"><div class="mole-eye"></div><div class="mole-eye"></div></div>
-          <div class="mole-nose"></div>
-        </div>
-        <div class="mole-value">${val} cm³</div>
-      `;
+    shuffled.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'btn-opt';
+      btn.innerText = `${opt} cm³`;
+      btn.onclick = () => checkAnswer(opt);
       grid.appendChild(btn);
     });
-  }
 
-  function resetTimer() {
-    clearInterval(timerInterval);
-    timeLeft = (gameMode === 'easy') ? 25 : 15;
-    updateTimerUI();
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      updateTimerUI();
-      if (timeLeft <= 0) {
-        clearInterval(timerInterval);
-        handleTimeout();
-      }
-    }, 1000);
-  }
-
-  function updateTimerUI() {
-    const display = document.getElementById('timer-display');
-    display.innerText = `⏱️ 時間：${timeLeft}s`;
-    if (timeLeft <= 5) {
-      display.classList.add('timer-warning');
-    } else {
-      display.classList.remove('timer-warning');
-    }
-  }
-
-  function triggerExperiment() {
-    if (hasDropped || isAnimating) return;
-    hasDropped = true;
     canAnswer = true;
-    document.getElementById('drop-btn').disabled = true;
+  }
 
-    let start = null;
-    const duration = 1600;
+  function startTimer() {
+    stopAllTimers();
+    timeLeft = (currentMode === 'easy') ? 25 : 15;
+    document.getElementById('timer-display').innerText = `⏳ ${timeLeft}s`;
 
-    function animate(timestamp) {
-      if (!start) start = timestamp;
-      let elapsed = timestamp - start;
-      animProgress = Math.min(elapsed / duration, 1);
-      
-      drawScene(animProgress);
+    function tick() {
+      timeLeft--;
+      document.getElementById('timer-display').innerText = `⏳ ${timeLeft}s`;
 
-      if (animProgress < 1) {
-        animFrame = requestAnimationFrame(animate);
+      if (timeLeft <= 0) {
+        handleTimeout();
       } else {
-        isAnimating = false;
+        timerId = setTimeout(tick, 1000);
       }
     }
 
-    isAnimating = true;
-    requestAnimationFrame(animate);
+    timerId = setTimeout(tick, 1000);
   }
 
-  function drawScene(progress) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // --- 絕對精準純單次繪圖 ---
+  function volToY(vol, maxVol, cylY, cylH) {
+    const margin = 20;
+    const usableH = cylH - margin * 2;
+    return Math.round(cylY + cylH - margin - (vol / maxVol) * usableH);
+  }
 
-    const tankX = 100, tankY = 40, tankW = 200, tankH = 240;
-    const spoutY = 100;
-    const spoutLength = 30;
+  function drawCylinder(x, y, w, h, waterVol, config, title, hasObjects) {
+    const baseMargin = 20;
+    const bottomY = y + h - baseMargin;
+    const waterTopY = volToY(waterVol, config.maxVol, y, h);
 
-    ctx.strokeStyle = "#1E293B";
-    ctx.lineWidth = 5;
-    ctx.lineCap = "round";
+    // 1. 水體填滿
+    ctx.fillStyle = "rgba(56, 189, 248, 0.55)";
+    ctx.fillRect(x + 5, waterTopY, w - 10, bottomY - waterTopY);
+
+    // 2. 水面頂線
+    ctx.strokeStyle = "#0284C7";
+    ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.moveTo(tankX, tankY);
-    ctx.lineTo(tankX, tankY + tankH);
-    ctx.lineTo(tankX + tankW, tankY + tankH);
-    ctx.lineTo(tankX + tankW, spoutY + 16);
-    ctx.lineTo(tankX + tankW + spoutLength, spoutY + 16);
-    ctx.moveTo(tankX + tankW, spoutY);
-    ctx.lineTo(tankX + tankW + spoutLength, spoutY);
+    ctx.moveTo(x + 5, waterTopY);
+    ctx.lineTo(x + w - 5, waterTopY);
     ctx.stroke();
 
-    ctx.fillStyle = "rgba(56, 189, 248, 0.65)";
-    ctx.fillRect(tankX + 3, spoutY + 3, tankW - 6, tankH - (spoutY - tankY) - 3);
-
-    if (progress > 0) {
-      const dropY = tankY + 25 + (tankH - 70) * Math.min(progress * 2, 1);
-      ctx.fillStyle = "#EF4444";
-      ctx.strokeStyle = "#991B1B";
+    // 3. 物件
+    if (hasObjects) {
+      const targetY = bottomY - 18;
+      ctx.fillStyle = "#F59E0B";
+      ctx.strokeStyle = "#B45309";
       ctx.lineWidth = 2;
-      
-      for(let i = 0; i < currentData.count; i++) {
-        let offsetX = (i - (currentData.count-1)/2) * 26;
-        let itemY = dropY - i * 8;
+
+      for (let i = 0; i < currentData.count; i++) {
+        const objX = x + (w / (currentData.count + 1)) * (i + 1);
         ctx.beginPath();
-        if(currentData.shape === '球體') {
-          ctx.arc(tankX + tankW/2 + offsetX, itemY, 12, 0, Math.PI*2);
-        } else if(currentData.shape === '圓錐體') {
-          ctx.moveTo(tankX + tankW/2 + offsetX, itemY - 15);
-          ctx.lineTo(tankX + tankW/2 + offsetX - 12, itemY + 8);
-          ctx.lineTo(tankX + tankW/2 + offsetX + 12, itemY + 8);
-          ctx.closePath();
-        } else if(currentData.shape === '圓柱體') {
-          ctx.rect(tankX + tankW/2 - 11 + offsetX, itemY - 13, 22, 26);
-        } else {
-          ctx.rect(tankX + tankW/2 - 12 + offsetX, itemY - 12, 24, 24);
-        }
+        ctx.arc(objX, targetY, 11, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
       }
     }
 
-    const cupX = tankX + tankW + spoutLength - 4;
-    const cupY = spoutY + 15; 
-    const cupW = 140, cupH = 205;
-    const baseMargin = 16;
-    const topMargin = 16;
-    const usableH = cupH - baseMargin - topMargin;
-    const cfg = currentData.cylinderConfig;
-
-    // 精確四捨五入計算像素 Y 座標，確保水面與刻度線無像素誤差
-    function volToY(vol) {
-      const bottomY = cupY + cupH - baseMargin;
-      const topY = cupY + topMargin;
-      const usableHeight = bottomY - topY;
-      return Math.round(bottomY - (vol / cfg.maxVol) * usableHeight);
-    }
-
-    if (progress > 0.18 && progress < 0.95) {
-      ctx.fillStyle = "rgba(56, 189, 248, 0.85)";
-      ctx.fillRect(tankX + tankW + spoutLength - 10, spoutY + 16, 8, cupH - 10);
-    }
-
-    // 繪製水體與極精準的水面頂線
-    const currentWaterVol = currentData.totalVol * Math.max(0, (progress - 0.2) / 0.75);
-    const bottomY = volToY(0);
-    const waterTopY = volToY(currentWaterVol);
-    const waterHeight = bottomY - waterTopY;
-    
-    if (waterHeight > 0) {
-      // 半透明水體
-      ctx.fillStyle = "rgba(56, 189, 248, 0.75)";
-      ctx.fillRect(cupX + 2, waterTopY, cupW - 4, waterHeight);
-      
-      // 平直清晰水面線（確保與刻度線無誤差對齊）
-      ctx.strokeStyle = "#0284C7";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(cupX + 2, waterTopY);
-      ctx.lineTo(cupX + cupW - 2, waterTopY);
-      ctx.stroke();
-    }
-
-    // 繪製量杯外框
-    ctx.strokeStyle = "#0F172A";
-    ctx.lineWidth = 4;
+    // 4. 外框
+    ctx.strokeStyle = "#334155";
+    ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(cupX, cupY);
-    ctx.lineTo(cupX, cupY + cupH - baseMargin);
-    ctx.lineTo(cupX + cupW, cupY + cupH - baseMargin);
-    ctx.lineTo(cupX + cupW, cupY);
+    ctx.moveTo(x, y);
+    ctx.lineTo(x, bottomY);
+    ctx.lineTo(x + w, bottomY);
+    ctx.lineTo(x + w, y);
     ctx.stroke();
 
-    // 繪製刻度線與數值標記
-    for (let i = 0; i <= cfg.maxVol; i += cfg.step) {
-      let markY = volToY(i);
+    // 5. 刻度
+    const totalTicks = config.maxVol / config.step;
+    for (let i = 0; i <= totalTicks; i++) {
+      const val = i * config.step;
+      const markY = volToY(val, config.maxVol, y, h);
+
+      const isMajor = (val % config.majorStep === 0);
+      const lineLen = isMajor ? 16 : 9;
+
+      ctx.strokeStyle = isMajor ? "#0F172A" : "#64748B";
+      ctx.lineWidth = isMajor ? 1.8 : 1.0;
+
       ctx.beginPath();
-      
-      if (i % cfg.majorStep === 0) {
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = "#0F172A";
-        ctx.moveTo(cupX, markY);
-        ctx.lineTo(cupX + 32, markY);
-        ctx.stroke();
+      ctx.moveTo(x + 5, markY);
+      ctx.lineTo(x + 5 + lineLen, markY);
+      ctx.stroke();
 
-        // 標籤邏輯：初級全部顯示，高級只顯示最高刻度 (100 cm³, 150 cm³, 200 cm³等)
-        let shouldShowLabel = false;
-        if (cfg.showLabels === 'all') {
-          shouldShowLabel = true;
-        } else if (cfg.showLabels === 'top_only' && i === cfg.maxVol) {
-          shouldShowLabel = true;
-        }
-
-        if (shouldShowLabel) {
-          ctx.fillStyle = "#0F172A";
-          ctx.font = "bold 13px sans-serif";
-          ctx.fillText(`${i} cm³`, cupX + 36, markY + 4);
-        }
+      let showText = false;
+      if (currentMode === 'easy') {
+        showText = isMajor;
       } else {
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = "#475569";
-        ctx.moveTo(cupX, markY);
-        ctx.lineTo(cupX + 18, markY);
-        ctx.stroke();
+        showText = (val === config.maxVol);
+      }
+
+      if (showText) {
+        ctx.fillStyle = "#0F172A";
+        ctx.font = "bold 13px sans-serif";
+        ctx.textAlign = "left";
+        ctx.fillText(`${val}`, x + 5 + lineLen + 4, markY + 4);
       }
     }
+
+    // 6. 標題
+    ctx.fillStyle = "#1E293B";
+    ctx.font = "bold 14px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(title, x + w / 2, y + h + 22);
+  }
+
+  function drawStaticScene() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const cfg = currentData.cylinderConfig;
+    const cylW = 130, cylH = 220, cylY = 35;
+
+    // 左量杯
+    drawCylinder(140, cylY, cylW, cylH, currentData.startVol, cfg, "【實驗前】未放入物件", false);
+
+    // 中間箭頭
+    ctx.fillStyle = "#3B82F6";
+    ctx.font = "bold 26px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("➔", 375, cylY + cylH / 2);
+
+    // 右量杯
+    drawCylinder(480, cylY, cylW, cylH, currentData.endVol, cfg, `【實驗後】放入 ${currentData.count} 個 立體`, true);
   }
 
   function checkAnswer(selectedVal) {
-    if (!canAnswer) {
-      return;
-    }
-    clearInterval(timerInterval);
+    if (!canAnswer) return;
     canAnswer = false;
+    stopAllTimers();
 
     const isCorrect = (selectedVal === currentData.correctAnswer);
     if (isCorrect) {
@@ -768,7 +678,9 @@
   }
 
   function handleTimeout() {
+    if (!canAnswer) return;
     canAnswer = false;
+    stopAllTimers();
     recordWrong("超時未答");
     showFeedback(false, `⏰ 時間到！正確答案是 ${currentData.correctAnswer} cm³`);
   }
@@ -776,9 +688,9 @@
   function recordWrong(userAns) {
     let detail = "";
     if (currentData.type === 'A') {
-      detail = `量杯排出總水量為 ${currentData.totalVol} cm³，因此 ${currentData.count} 個立體總體積為 ${currentData.totalVol} cm³。`;
+      detail = `水位由 ${currentData.startVol} cm³ 上升至 ${currentData.endVol} cm³。${currentData.count} 個物件總體積 = ${currentData.endVol} - ${currentData.startVol} = ${currentData.totalVol} cm³。`;
     } else {
-      detail = `量杯排出總水量為 ${currentData.totalVol} cm³，共有 ${currentData.count} 個立體。每個體積 = ${currentData.totalVol} ÷ ${currentData.count} = ${currentData.unitVol} cm³。`;
+      detail = `總排水量 = ${currentData.endVol} - ${currentData.startVol} = ${currentData.totalVol} cm³。每個體積 = ${currentData.totalVol} ÷ ${currentData.count} = ${currentData.unitVol} cm³。`;
     }
 
     wrongRecords.push({
@@ -794,6 +706,7 @@
     const overlay = document.getElementById('feedback-overlay');
     const msgBox = document.getElementById('feedback-msg');
     const detailBox = document.getElementById('feedback-detail');
+    const btnNext = document.getElementById('btn-next-question');
 
     msgBox.innerText = msg;
     msgBox.style.color = isCorrect ? "#10B981" : "#EF4444";
@@ -801,20 +714,27 @@
     if(!isCorrect) {
       detailBox.innerText = wrongRecords[wrongRecords.length - 1].detail;
     } else {
-      detailBox.innerText = "";
+      detailBox.innerText = "做得好！點擊下方按鈕繼續挑戰。";
+    }
+
+    if (currentQuestion >= totalQuestions) {
+      btnNext.innerText = "查看結算結果 🏁";
+    } else {
+      btnNext.innerText = "下一題 ➔";
     }
 
     overlay.style.display = 'flex';
+  }
 
-    setTimeout(() => {
-      overlay.style.display = 'none';
-      nextQuestion();
-    }, 2200);
+  function closeFeedbackAndNext() {
+    document.getElementById('feedback-overlay').style.display = 'none';
+    nextQuestion();
   }
 
   function showResult() {
+    stopAllTimers();
+
     document.getElementById('question-area').style.display = 'none';
-    document.getElementById('options-grid').style.display = 'none';
     document.getElementById('experiment-area').style.display = 'none';
     document.getElementById('result-screen').style.display = 'block';
 
@@ -822,16 +742,16 @@
 
     const passStatus = document.getElementById('pass-status');
     if (score >= 3) {
-      passStatus.className = 'pass-tag';
+      passStatus.className = 'pass-tag pass';
       passStatus.innerHTML = '🌟 合格！請向老師出示，並獲取貼紙一個 🎁';
     } else {
-      passStatus.className = 'fail-tag';
+      passStatus.className = 'pass-tag fail';
       passStatus.innerHTML = '💪 再接再厲！請重新挑戰！';
     }
 
     const reviewList = document.getElementById('review-list');
     if (wrongRecords.length === 0) {
-      reviewList.innerHTML = '<p style="color:#10B981; font-weight:bold;">太厲害了！全部題目答對！🎉</p>';
+      reviewList.innerHTML = '<p style="color:#10B981; font-weight:bold; text-align:center;">太厲害了！全部題目答對！🎉</p>';
     } else {
       reviewList.innerHTML = wrongRecords.map(item => `
         <div class="review-item">
@@ -846,4 +766,5 @@
 
   window.onload = showModeSelect;
 </script>
-<!-- ... existing code -->
+</body>
+</html>
